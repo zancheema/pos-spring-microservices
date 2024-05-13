@@ -1,0 +1,17 @@
+server:
+  port: 4002
+
+spring:
+  application:
+    name: billingservice
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_pos_billingservice
+    username: springuser
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: localhost:29092
+
