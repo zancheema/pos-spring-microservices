@@ -1,5 +1,5 @@
 server:
-  port: 4002
+  port: 4003
 
 spring:
   application:
@@ -14,4 +14,13 @@ spring:
       ddl-auto: update
   kafka:
     bootstrap-servers: localhost:29092
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:4001/eureka
 
