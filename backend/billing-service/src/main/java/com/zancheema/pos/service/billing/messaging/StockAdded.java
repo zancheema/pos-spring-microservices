@@ -1,4 +1,4 @@
-package com.zancheema.pos.service.inventory.messaging;
+package com.zancheema.pos.service.billing.messaging;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockAddedMessagePayload {
+public class StockAdded {
     private long id;
     private UUID itemCode;
     private String itemName;

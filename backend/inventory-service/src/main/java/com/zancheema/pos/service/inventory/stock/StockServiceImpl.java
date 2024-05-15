@@ -2,10 +2,11 @@ package com.zancheema.pos.service.inventory.stock;
 
 import com.zancheema.pos.service.inventory.item.Item;
 import com.zancheema.pos.service.inventory.item.ItemRepository;
-import com.zancheema.pos.service.inventory.messaging.StockAddedMessagePayload;
+import com.zancheema.pos.service.inventory.messaging.StockAdded;
 import com.zancheema.pos.service.inventory.stock.dto.StockCreationPayload;
 import com.zancheema.pos.service.inventory.stock.dto.StockInfo;
 import com.zancheema.pos.service.inventory.util.StreamUtil;
+import com.zancheema.pos.service.inventory.util.UserContextHolder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -54,14 +55,14 @@ public class StockServiceImpl implements StockService {
         );
 
         // publish added stock
-        kafkaTemplate.send(TOPIC_STOCK_ADDED, new StockAddedMessagePayload(
+        kafkaTemplate.send(TOPIC_STOCK_ADDED, new StockAdded(
                 savedStock.getId(),
                 stock.getItem().getItemCode(),
                 stock.getItem().getName(),
                 stock.getItem().getRetailPrice(),
                 stock.getBatchNo(),
                 stock.getQuantity(),
-                UUID.randomUUID()
+                UserContextHolder.getContext().getCorrelationId()
         ));
 
         return Optional.of(stockInfo);
