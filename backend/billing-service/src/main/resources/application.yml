@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: billingservice
+    name: billing-service
   datasource:
     url: jdbc:mysql://localhost:3306/spring_pos_billingservice
     username: springuser

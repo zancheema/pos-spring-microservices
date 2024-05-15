@@ -1,0 +1,34 @@
+server:
+  port: 4000
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:4001/eureka
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: inventory
+        uri: lb://INVENTORY-SERVICE
+        predicates:
+        - Path=/inventory/**
+        filters:
+        - StripPrefix=1
+
+      - id: billing
+        uri: lb://BILLING-SERVICE
+        predicates:
+        - Path=/billing/**
+        filters:
+        - StripPrefix=1
