@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zancheema.pos.service.billing.stock.Stock;
 import com.zancheema.pos.service.billing.stock.StockRepository;
+import com.zancheema.pos.service.billing.util.UserContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -37,5 +38,6 @@ public class KafkaListeners {
                 msgBody.getQuantity()
         );
         stockRepository.save(stock);
+        UserContextHolder.getContext().setCorrelationId(msgBody.getCorrelationId());
     }
 }

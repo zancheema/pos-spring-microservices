@@ -16,5 +16,5 @@ public class StockAdded {
     private double itemPrice;
     private int batchNo;
     private int quantity;
-    private UUID correlationId;
+    private String correlationId;
 }
