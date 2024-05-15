@@ -3,11 +3,11 @@ spring:
     name: discovery-service
 
 server:
-  port: 4001
+  port: 8761
 
 eureka:
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    register-with-eureka: false
+    fetch-registry: false
   server:
-    waitTimeInMsWhenSyncEmpty: 5
+    wait-time-in-ms-when-sync-empty: 5
