@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zancheema.pos.service.inventory.stock.Stock;
 import com.zancheema.pos.service.inventory.stock.StockRepository;
+import com.zancheema.pos.service.inventory.util.UserContextHolder;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class KafkaListeners {
 
     @KafkaListener(topics = KafkaTopicConfig.TOPIC_STOCK_SOLD, groupId = GROUP_ID)
     public void listenToStockSold(ConsumerRecord<String, Object> record) throws JsonProcessingException {
-        StockSoldMessagePayload msgBody = objectMapper.readValue(record.value().toString(), StockSoldMessagePayload.class);
+        StockSold msgBody = objectMapper.readValue(record.value().toString(), StockSold.class);
 
         Optional<Stock> optionalStock = stockRepository.findById(msgBody.getStockId());
         if (optionalStock.isEmpty()) {
@@ -43,5 +44,7 @@ public class KafkaListeners {
         int newQuantity = stock.getQuantity() - msgBody.getQuantity();
         stock.setQuantity(newQuantity);
         stockRepository.save(stock);
+
+        UserContextHolder.getContext().setCorrelationId(msgBody.getCorrelationId());
     }
 }

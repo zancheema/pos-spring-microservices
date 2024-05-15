@@ -8,10 +8,11 @@ import com.zancheema.pos.service.billing.invoice.dto.InvoiceInfo;
 import com.zancheema.pos.service.billing.invoiceitem.InvoiceItem;
 import com.zancheema.pos.service.billing.invoiceitem.InvoiceItemRepository;
 import com.zancheema.pos.service.billing.messaging.KafkaTopicConfig;
-import com.zancheema.pos.service.billing.messaging.StockSoldMessagePayload;
+import com.zancheema.pos.service.billing.messaging.StockSold;
 import com.zancheema.pos.service.billing.stock.Stock;
 import com.zancheema.pos.service.billing.stock.StockRepository;
 import com.zancheema.pos.service.billing.util.StreamUtil;
+import com.zancheema.pos.service.billing.util.UserContextHolder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -84,8 +85,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoiceItemRepository.save(invoiceItem);
 
             // publish stock-sold event
-            kafkaTemplate.send(KafkaTopicConfig.TOPIC_STOCK_SOLD, new StockSoldMessagePayload(
-                    stock.getId(), item.getQuantity(), UUID.randomUUID()
+            kafkaTemplate.send(KafkaTopicConfig.TOPIC_STOCK_SOLD, new StockSold(
+                    stock.getId(), item.getQuantity(), UserContextHolder.getContext().getCorrelationId()
             ));
         }
 
